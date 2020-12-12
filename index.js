@@ -22,7 +22,15 @@ app.get("/", (req, res) => {
 
 app.get(BASE_API_PATH + "/products", (req, res) => {
     console.log(Date() + " - GET /products");
-    res.send([]);
+
+    db.find({}, (err, products) => {
+        if (err) {
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        } else {
+            res.send(products);
+        }
+    });
 });
 
 app.post(BASE_API_PATH + "/products", (req, res) => {
