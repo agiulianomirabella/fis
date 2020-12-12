@@ -28,7 +28,10 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
         } else {
-            res.send(products);
+            res.send(products.map((product) => {
+                delete product._id;
+                return product;
+            }));
         }
     });
 });
