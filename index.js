@@ -60,11 +60,11 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
 });
 
 app.put(BASE_API_PATH + "/products/:id", (req, res) => {
-    console.log(Date() + " - PUT /products/" + req.query._id);
-    db.update({"_id": req.query._id}, { $set: {n_stock: n_stock-req.body.quantity} }, (err, res) => {
+    console.log(Date() + " - PUT /products/" + req.params.id);
+    db.update({"_id": req.params.id}, { $inc: {in_stock: -req.body.quantity}, $set: {price: req.body.price}}, (err) => {
         if (err) {
             console.log(Date() + " - " + err);
-            res.sendStatus(400);
+            res.sendStatus(500);
         } else {
             res.sendStatus(201);
         }
