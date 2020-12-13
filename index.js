@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var DataStore = require('nedb')
 
-var port = 3000;
+var port = (process.env.PORT || 3000);
 var BASE_API_PATH = "/api/v1";
 var DB_FILE_NAME = __dirname + "/products.json";
 
@@ -17,7 +17,7 @@ var db = new DataStore({
 });
 
 app.get("/", (req, res) => {
-    res.send("<html><body><h1>My server</h1></body></html>");
+    res.send("<html><body><h1>Hola Lola!</h1><h2>Un saludo,</h2><h2>   Giuliano</h2></body></html>");
 });
 
 app.get(BASE_API_PATH + "/products", (req, res) => {
