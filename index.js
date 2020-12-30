@@ -21,18 +21,28 @@ app.get("/", (req, res) => {
 });
 
 app.get(BASE_API_PATH + "/products", (req, res) => {
-    console.log(Date() + " - GET /products");
+    if (req.query.category){
+        console.log(Date() + " - GET /products?category=" + req.query.category);
+    }else{
+        console.log(Date() + " - GET /products");
+    }
 
     db.find({}, (err, products) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
         } else {
-            res.send(products.map((product) => {
+            if (req.query.category){
+                res.send(products.filter((product) => {
+                    return product.category == req.query.category;
+                }));
+            }else{
+                res.send(products.map((product) => {
                 delete product._id;
                 return product;
-            }));
-        }
+                }));
+            };
+        };
     });
 });
 
@@ -48,6 +58,20 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
         }
     });
 });
+
+
+app.put(BASE_API_PATH + "/products/:id", (req, res) => {
+    console.log(Date() + " - PUT /products/" + req.params.id);
+    db.update({"_id": req.params.id}, { $inc: {in_stock: -req.body.quantity}, $set: {price: req.body.price}}, (err) => {
+        if (err) {
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(201);
+        }
+    });
+});
+
 
 app.listen(port);
 
