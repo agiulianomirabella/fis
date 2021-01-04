@@ -17,7 +17,8 @@ const contactSchema = new mongoose.Schema({
 
 
 contactSchema.methods.cleanup = function(){
-    return{code: this.code,
+    return{
+        code: this.code,
         name: this.name,
         description: this.description,
         productImages: this.productImages,
