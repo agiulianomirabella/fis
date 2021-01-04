@@ -13,22 +13,27 @@ app.get("/", (req, res) => {
 });
 
 app.get(BASE_API_PATH + "/products", (req, res) => {
-    if (req.query.category){
-        console.log(Date() + " - GET /products?category=" + req.query.category);
-    }else{
-        console.log(Date() + " - GET /products");
-    }
-
+    
     Product.find({}, (err, products) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
         } else {
             if (req.query.category){
+                console.log(Date() + " - GET /products?category=" + req.query.category);
                 res.send(products.filter((product) => {
                     return product.category == req.query.category;
                 }));
-            }else{
+            }
+            else if(req.query.code){
+                console.log(Date() + " - GET /products?code=" + req.query.code);
+                res.send(products.filter((product) => {
+                    return product.code == req.query.code;
+                }));
+            }
+            
+            else{
+                console.log(Date() + " - GET /products");
                 res.send(products.map((product) => {
                 
                     return product.cleanup();
@@ -51,10 +56,10 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
-
+//REPASAR CAMBIAN COSAS CON MONGO DB
 app.put(BASE_API_PATH + "/products/:id", (req, res) => {
     console.log(Date() + " - PUT /products/" + req.params.id);
-    Contact.update({"_id": req.params.id}, { $inc: {in_stock: -req.body.quantity}, $set: {price: req.body.price}}, (err) => {
+    Product.updateOne({"_id": req.params.id}, { $inc: {amount: -req.body.amount}, $set: {price: req.body.price}}, (err) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
