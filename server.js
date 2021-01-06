@@ -25,13 +25,7 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
                     return product.category == req.query.category;
                 }));
             }
-            else if(req.query.code){
-                console.log(Date() + " - GET /products?code=" + req.query.code);
-                res.send(products.filter((product) => {
-                    return product.code == req.query.code;
-                }));
-            }
-            
+                        
             else{
                 console.log(Date() + " - GET /products");
                 res.send(products.map((product) => {
@@ -41,6 +35,39 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
             };
         };
     });
+});
+
+app.get(BASE_API_PATH+"/products/:id", (req, res)=>{
+    Product.findById(req.params.id, (err, product)=>{
+        if(err){
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        }else if(product){
+            console.log(Date() + " - GET /products/"+ req.params.id);
+            res.sendStatus(200);                          
+            res.send(product.cleanup())
+            
+        }
+        
+        else{
+            console.log(Date() + " - No product available with this id: "+ req.params.id);
+            res.sendStatus(404);
+        }
+    })
+    
+})
+
+app.delete(BASE_API_PATH + "/products/:id", (req, res)=>{
+    console.log(Date() + " - Delete /products/"+req.params.id);
+    
+    Product.findByIdAndRemove(req.params.id, (err, product)=>{
+        if(err){
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        }else{
+            res.sendStatus(204);
+        }
+    })
 });
 
 app.post(BASE_API_PATH + "/products", (req, res) => {
