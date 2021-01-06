@@ -18,6 +18,7 @@ const contactSchema = new mongoose.Schema({
 
 contactSchema.methods.cleanup = function(){
     return{
+        //__id: this.id,
         code: this.code,
         name: this.name,
         description: this.description,
@@ -29,7 +30,7 @@ contactSchema.methods.cleanup = function(){
         amount: this.amount};
 }
 
-const Product = mongoose.model('Contact', contactSchema);
+const Product = mongoose.model('Product', contactSchema);
 
 
 module.exports = Product;
