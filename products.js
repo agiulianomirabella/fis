@@ -12,7 +12,6 @@ const contactSchema = new mongoose.Schema({
     stock: Boolean,
     amount: Number,
 
-
 })
 
 
