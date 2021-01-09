@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 const Product = require('./products.js');
+const https = require('https');
 
 var BASE_API_PATH = "/api/v1";
 
@@ -76,26 +77,41 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
         } else {
-
             res.sendStatus(201);
-
         }
     });
 });
 
-//Añadir algo para que 
-app.put(BASE_API_PATH + "/products/:id", (req, res) => {
-    console.log(Date() + " - PUT /products/" + req.params.id);
-    Product.updateOne({"_id": req.params.id}, { $inc: {amount: req.body.amount}}, (err) => {
-        if (err) {
+app.patch(BASE_API_PATH + "/products/:id", (req, res) => {
+    console.log(Date() + " - PATCH /products/" + req.params.id + " amount:" + req.body.amount);
+
+    Product.findById(req.params.id, (err, product)=>{
+        if(err){
             console.log(Date() + " - " + err);
             res.sendStatus(500);
-        } 
-        
-        else {
-            res.sendStatus(201);
+        }else if(product){
+            if (product.amount + req.body.amount >= 0){
+                console.log("Allowed amount");
+                Product.updateOne({"_id": req.params.id}, { $inc: {amount: req.body.amount}}, (err) => {
+                    if (err) {
+                        console.log(Date() + " - " + err);
+                        res.sendStatus(500);
+                    } else {
+                        res.sendStatus(201);
+                    }
+                });
+            } else {
+                console.log("Forbidden amount:");
+                console.log(Date() + "Product " + req.params.id + " cannot be updated by " + req.body.amount + " units. Only " + product.amount + " in stock.");
+                res.sendStatus(400);
+            }
+        }        
+        else{
+            console.log(Date() + " - No product available with this id: "+ req.params.id);
+            res.sendStatus(400);
         }
-    });
+    })
+
 });
 
 
