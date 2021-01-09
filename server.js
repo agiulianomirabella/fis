@@ -86,19 +86,23 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
-/*/REPASAR CAMBIAN COSAS CON MONGO DB
+//Añadir algo para que 
 app.put(BASE_API_PATH + "/products/:id", (req, res) => {
     console.log(Date() + " - PUT /products/" + req.params.id);
-    Product.updateOne({"_id": req.params.id}, { $inc: {amount: -req.body.amount}, $set: {price: req.body.price}}, (err) => {
+    Product.updateOne({"_id": req.params.id}, { $inc: {amount: req.body.amount}}, (err) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
-        } else {
+        } 
+        
+        else {
             res.sendStatus(201);
         }
     });
 });
-*/
+
+
+
 app.put(BASE_API_PATH + "/products/:id",(req,res)=>{
     console.log(Date() + " - PUT /products/" + req.params.id);
     Product.findOne({_id: req.params.id}, (err, product)=>{

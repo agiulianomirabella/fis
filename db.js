@@ -1,6 +1,8 @@
 const mongoose= require('mongoose');
 
-const DB_URL=(process.env.MONGO_URL || 'mongodb://localhost/test');
+const MONGODB_URI = "mongodb+srv://user0:BnJAOAYqaaeD2yfz@product.8m7zl.mongodb.net/<dbname>?retryWrites=true&w=majority";
+
+const DB_URL=(process.env.MONGODB_URI || 'mongodb://db/test');
 
 const dbConnect= function(){
     const db=mongoose.connection; 

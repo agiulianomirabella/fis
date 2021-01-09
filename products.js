@@ -2,16 +2,36 @@ const mongoose = require('mongoose');
 
 
 const contactSchema = new mongoose.Schema({
-    code: String, //código de barras
-    name: String,
+    code: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     productImages: Buffer,
-    provider: String,
-    category: String,
-    price: Number,
-    stock: Boolean,
-    amount: Number,
-
+    provider: {
+        type: String,
+        required: true
+    },
+    category: {type: String, enum:['Mascarillas','Guantes', 'Limpieza', 'Pantallas', 'Otros']},
+    price: {
+        type: Number,
+        min: 0,
+        required: true
+    },
+    stock: {
+        type: Boolean,
+        default: true
+    },
+    amount: {
+        type: Number,
+        min: 0,
+        requied: true,
+    },
+    created: Date, //lo añadimos?
 })
 
 
@@ -25,8 +45,8 @@ contactSchema.methods.cleanup = function(){
         provider: this.provider,
         category: this.category,
         price: this.price,
-        stock: this.stock,
-        amount: this.amount};
+        amount: this.amount
+    };
 }
 
 const Product = mongoose.model('Product', contactSchema);
