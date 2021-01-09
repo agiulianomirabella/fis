@@ -1,6 +1,6 @@
 const mongoose= require('mongoose');
 
-const MONGODB_URI = "mongodb+srv://user0:BnJAOAYqaaeD2yfz@product.8m7zl.mongodb.net/<dbname>?retryWrites=true&w=majority";
+
 
 const DB_URL=(process.env.MONGODB_URI || 'mongodb://db/test');
 
