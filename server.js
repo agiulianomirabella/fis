@@ -29,7 +29,6 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
             else{
                 console.log(Date() + " - GET /products");
                 res.send(products.map((product) => {
-                
                     return product.cleanup();
                 }));
             };
@@ -44,9 +43,9 @@ app.get(BASE_API_PATH+"/products/:id", (req, res)=>{
             res.sendStatus(500);
         }else if(product){
             console.log(Date() + " - GET /products/"+ req.params.id);
-            res.sendStatus(200);                          
+            console.log(product);
+            res.sendStatus(200);
             res.send(product.cleanup())
-            
         }
         
         else{
