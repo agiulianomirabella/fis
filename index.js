@@ -15,4 +15,3 @@ dbConnect().then(
     }
 
 )
-
