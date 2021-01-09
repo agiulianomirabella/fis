@@ -43,9 +43,7 @@ app.get(BASE_API_PATH+"/products/:id", (req, res)=>{
             res.sendStatus(500);
         }else if(product){
             console.log(Date() + " - GET /products/"+ req.params.id);
-            console.log(product);
-            res.sendStatus(200);
-            res.send(product.cleanup())
+            res.status(200).send(product.cleanup())
         }
         
         else{
