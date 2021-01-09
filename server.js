@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-const Product = require('./products');
+const Product = require('./products.js');
 
 var BASE_API_PATH = "/api/v1";
 
