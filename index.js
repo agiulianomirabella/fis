@@ -1,5 +1,5 @@
-const app = require('./server.js');
-const dbConnect = require('./db.js');
+const app = require('../server.js');
+const dbConnect = require('../db.js');
 
 var port = (process.env.PORT || 3000);
 
