@@ -16,8 +16,6 @@ dbConnect().then(
 
 )
 
-//prueba
-
 
 
 
