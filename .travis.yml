@@ -23,4 +23,4 @@ deploy:
     heroku container:release web -a $HEROKU_APP_NAME;
   
   on:
-    branch: master
+    branch: main
