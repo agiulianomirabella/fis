@@ -19,6 +19,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.11.9",
     "nedb": "^1.8.0",
-    "server": "^1.0.31"
+    "request-promise-native": "^1.0.9",
+    "server": "^1.0.31",
+    "url-join": "^4.0.1"
   }
 }
