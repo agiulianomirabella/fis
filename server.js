@@ -39,6 +39,7 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
+
 app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
     Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
@@ -57,9 +58,24 @@ app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
     
 })
 
+app.get(BASE_API_PATH+"/products?search=", (req, res)=>{
+    console.log(Date() + " - GET /products/ by text= "+req.query.search);
+    Product.find({$text:{$search:q}}, (err, products)=>{
+        if(err){
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        }else{
+            res.status(200).send(products.cleanup())
+        }
+    })
+
+});
+
+
+
 app.delete(BASE_API_PATH + "/products/:code", (req, res)=>{
 
-    console.log(Date() + " - Delete /products/"+req.params.id);
+    console.log(Date() + " - Delete /products/"+req.params.code);
     
     Product.findOneAndRemove({code: req.params.code}, (err, product)=>{
         if(err){
