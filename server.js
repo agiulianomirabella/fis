@@ -13,51 +13,6 @@ app.get("/", (req, res) => {
     res.send("<html><body><h1>Catálogo de productos</h1><h2>Un saludo,</h2><h2>   Lola</h2></body></html>");
 });
 
-app.get(BASE_API_PATH + "/products", (req, res) => {
-    
-    Product.find({}, (err, products) => {
-        if (err) {
-            console.log(Date() + " - " + err);
-            res.sendStatus(500);
-        } else {
-            if (req.query.category){
-                console.log(Date() + " - GET /products?category=" + req.query.category);
-                res.send(products.filter((product) => {
-                    return product.category == req.query.category;
-                }));
-            }
-
-            //añadir un filtro con nombre de proveedor --> hacerlo a través de integración
-                        
-            else{
-                console.log(Date() + " - GET /products");
-                res.send(products.map((product) => {
-                    return product.cleanup();
-                }));
-            };
-        };
-    });
-});
-
-
-app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
-    Product.findOne({code: req.params.code}, (err, product)=>{
-        if(err){
-            console.log(Date() + " - " + err);
-            res.sendStatus(500);
-        }else if(product){
-            console.log(Date() + " - GET /products/"+ req.params.id);
-            res.status(200).send(product.cleanup())
-        }
-        
-        else{
-            console.log(Date() + " - No product available with this code: "+ req.params.code);
-            res.sendStatus(404);
-        }
-    })
-    
-})
-
 app.get(BASE_API_PATH+"/products?search=", (req, res)=>{
     console.log(Date() + " - GET /products/ by text= "+req.query.search);
     Product.find({$text:{$search:q}}, (err, products)=>{
@@ -70,6 +25,75 @@ app.get(BASE_API_PATH+"/products?search=", (req, res)=>{
     })
 
 });
+
+app.get(BASE_API_PATH + "/products/providers", (req,res)=>{
+    console.log(Date() + " - GET Name of all providers");
+    
+    Product.distinct("provider_name", (err, providers) => {
+        if (err) {
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        } else {                      
+            res.send(providers) ;
+            
+        }
+    })
+});
+//OBTENER TODOS LOS PRODUCTOS. FILTRAR POR CATEGORÍA
+app.get(BASE_API_PATH + "/products", (req, res) => {
+    
+    console.log(Date() + " - GET /products" );
+    Product.find({}, (err, products) => {
+        if (err) {
+            console.log(Date() + " - " + err);
+            res.status(500);
+        } else {
+            if (req.query.category){
+                console.log(Date() + " By category=" + req.query.category);
+                
+                products=products.filter((product) =>product.category == req.query.category);
+                
+            }
+            if (req.query.provider){
+                console.log(Date() + " By provider=" + req.query.provider);                
+                products=products.filter((product) =>product.provider_name == req.query.provider);
+            }
+
+
+            if(products.length === 0){
+                res.status(404).send("Products Not Found")
+            }else{
+                res.status(200).send(products);
+            }
+            
+        };
+    });
+});
+
+
+//OBTENER PRODUCTO POR CÓDIGO
+app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
+    
+    Product.findOne({code: req.params.code}, (err, product)=>{
+        if(err){
+            console.log(Date() + " - " + err);
+            res.sendStatus(500);
+        }else if(product){
+            console.log(Date() + " - GET /products/"+ req.params.code);
+            res.status(200).send(product.cleanup())
+        }
+        
+        else{
+            console.log(Date() + " - No product available with this code: "+ req.params.code);
+            res.sendStatus(404);
+        }
+    })
+    
+});
+
+
+
+
 
 
 
@@ -178,7 +202,7 @@ app.get(BASE_API_PATH+ "/providers", (req,response)=>{
             console.log("error: "+error);
             response.sendStatus(500);
         })
-})
+});
 /*
 app.put(BASE_API_PATH+"/providers", (req,response)=>{
     console.log("PUT /providers");
