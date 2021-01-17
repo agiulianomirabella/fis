@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-
+const ProvidersResource= require('./providersResource.js');
 const Product = require('./products.js');
 const https = require('https');
 
@@ -166,5 +166,31 @@ app.put(BASE_API_PATH + "/products/:code",(req,res)=>{
         
     })
 });
+
+app.get(BASE_API_PATH+ "/providers", (req,response)=>{
+    console.log("GET /providers");
+
+    ProvidersResource.getProviders()
+        .then((body)=>{
+            response.send(body);
+        })
+        .catch((error)=>{
+            console.log("error: "+error);
+            response.sendStatus(500);
+        })
+})
+/*
+app.put(BASE_API_PATH+"/providers", (req,response)=>{
+    console.log("PUT /providers");
+
+    ProvidersResource.putProviders()
+        .then((body)=>{
+            response.send(body);
+        })
+        .catch((error)=>{
+            console.log("error: "+error);
+            response.sendStatus(500);
+        })
+});*/
 
 module.exports = app;

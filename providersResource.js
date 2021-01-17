@@ -4,7 +4,7 @@ const request = require('request-promise-native').defaults({json: true});
 class ProvidersResource{
     
     static providersUrl(resourceUrl){
-        const providersServer = (process.env.PROVIDERS_URL || 'http://localhost:3000/api/v1');
+        const providersServer = (process.env.PROVIDERS_URL || 'http://host.docker.internal:3500/api/v1');
         return urljoin(providersServer, resourceUrl);
     }
 
@@ -16,7 +16,7 @@ class ProvidersResource{
         };
     }
 
-    static getProvider(){
+    static getProviders(){
         const url = ProvidersResource.providersUrl("/providers");
         const options={
             headers: ProvidersResource.requestHeaders()
@@ -24,13 +24,13 @@ class ProvidersResource{
         return request.get(url, options);
     }
 
-    static postPedidoProveedor(){
+    static putStockProveedor(){
         const url = ProvidersResource.providersUrl("/providers");
         const options={
             headers: ProvidersResource.requestHeaders()
         }
 
-        return request.post(url, options);
+        return request.put(url, options);
     }
 
 }
