@@ -16,6 +16,14 @@ class ProvidersResource{
         };
     }
 
+    static getProvider(){
+        const url = ProvidersResource.providersUrl("/providers");
+        const options={
+            headers: ProvidersResource.requestHeaders()
+        }
+        return request.get(url, options);
+    }
+
     static postPedidoProveedor(){
         const url = ProvidersResource.providersUrl("/providers");
         const options={
