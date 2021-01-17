@@ -26,6 +26,8 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
                     return product.category == req.query.category;
                 }));
             }
+
+            //añadir un filtro con nombre de proveedor --> hacerlo a través de integración
                         
             else{
                 console.log(Date() + " - GET /products");
@@ -37,8 +39,8 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
-app.get(BASE_API_PATH+"/products/:id", (req, res)=>{
-    Product.findById(req.params.id, (err, product)=>{
+app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
+    Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date() + " - " + err);
             res.sendStatus(500);
@@ -48,18 +50,18 @@ app.get(BASE_API_PATH+"/products/:id", (req, res)=>{
         }
         
         else{
-            console.log(Date() + " - No product available with this id: "+ req.params.id);
+            console.log(Date() + " - No product available with this code: "+ req.params.code);
             res.sendStatus(404);
         }
     })
     
 })
 
-app.delete(BASE_API_PATH + "/products/:id", (req, res)=>{
+app.delete(BASE_API_PATH + "/products/:code", (req, res)=>{
 
     console.log(Date() + " - Delete /products/"+req.params.id);
     
-    Product.findByIdAndRemove(req.params.id, (err, product)=>{
+    Product.findOneAndRemove({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date() + " - " + err);
             res.sendStatus(500);
@@ -82,17 +84,17 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
-app.patch(BASE_API_PATH + "/products/:id", (req, res) => {
-    console.log(Date() + " - PATCH /products/" + req.params.id + " amount:" + req.body.amount);
+app.patch(BASE_API_PATH + "/products/:code", (req, res) => {
+    console.log(Date() + " - PATCH /products/" + req.params.code + " amount:" + req.body.amount);
 
-    Product.findById(req.params.id, (err, product)=>{
+    Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date() + " - " + err);
             res.sendStatus(500);
         }else if(product){
             if (product.amount + req.body.amount >= 0){
                 console.log("Allowed amount");
-                Product.updateOne({"_id": req.params.id}, { $inc: {amount: req.body.amount}}, (err) => {
+                Product.updateOne({code: req.params.code}, { $inc: {amount: req.body.amount}}, (err) => {
                     if (err) {
                         console.log(Date() + " - " + err);
                         res.sendStatus(500);
@@ -102,12 +104,12 @@ app.patch(BASE_API_PATH + "/products/:id", (req, res) => {
                 });
             } else {
                 console.log("Forbidden amount:");
-                console.log(Date() + "Product " + req.params.id + " cannot be updated by " + req.body.amount + " units. Only " + product.amount + " in stock.");
+                console.log(Date() + "Product " + req.params.code + " cannot be updated by " + req.body.amount + " units. Only " + product.amount + " in stock.");
                 res.sendStatus(400);
             }
         }        
         else{
-            console.log(Date() + " - No product available with this id: "+ req.params.id);
+            console.log(Date() + " - No product available with this code: "+ req.params.id);
             res.sendStatus(400);
         }
     })
@@ -116,21 +118,19 @@ app.patch(BASE_API_PATH + "/products/:id", (req, res) => {
 
 
 
-app.put(BASE_API_PATH + "/products/:id",(req,res)=>{
+app.put(BASE_API_PATH + "/products/:code",(req,res)=>{
     console.log(Date() + " - PUT /products/" + req.params.id);
-    Product.findOne({_id: req.params.id}, (err, product)=>{
+    Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date()+ " - "+err);
             res.sendStatus(500);
         }else if(!product){
-            console.log(Date()+" - PUT /products/"+req.params.id + " Error: Product not found");
+            console.log(Date()+" - PUT /products/"+req.params.code + " Error: Product not found");
             res.sendStatus(404);
         }else{
-            product.code= req.body.code;
             product.name= req.body.name;
             product.description= req.body.description;
             product.productImages= req.body.productImages;
-            product.provider= req.body.provider;
             product.category= req.body.category;
             product.price= req.body.price;
             product.stock= req.body.stock;
@@ -141,7 +141,7 @@ app.put(BASE_API_PATH + "/products/:id",(req,res)=>{
                     console.log(Date()+ " - "+err);
                     res.status(500);
                 }else{
-                    console.log(Date()+" - PUT /products/"+req.params.id + " Product have been updated");
+                    console.log(Date()+" - PUT /products/"+req.params.code + " Product have been updated");
                     res.status(200);
                     return res.send(product.cleanup());
                 }
