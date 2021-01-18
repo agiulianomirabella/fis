@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const contactSchema = new mongoose.Schema({
     code: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,
@@ -12,20 +13,24 @@ const contactSchema = new mongoose.Schema({
     },
     description: String,
     productImages: Buffer,
-    provider: {
+    
+    provider_name:{
+        type: String,
+        required:true
+    },
+
+    provider_cif:{
         type: String,
         required: true
     },
+    
     category: {type: String, enum:['Mascarillas','Guantes', 'Limpieza', 'Pantallas', 'Otros']},
     price: {
         type: Number,
         min: 0,
         required: true
     },
-    stock: {
-        type: Boolean,
-        default: true
-    },
+ 
     amount: {
         type: Number,
         min: 0,
@@ -48,6 +53,7 @@ contactSchema.methods.cleanup = function(){
         amount: this.amount
     };
 }
+
 
 const Product = mongoose.model('Product', contactSchema);
 
