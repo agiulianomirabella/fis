@@ -39,7 +39,7 @@ app.get(BASE_API_PATH + "/products/providers", (req,res)=>{
         }
     })
 });
-//OBTENER TODOS LOS PRODUCTOS. FILTRAR POR CATEGORÍA
+
 app.get(BASE_API_PATH + "/products", (req, res) => {
     
     console.log(Date() + " - GET /products" );
@@ -71,7 +71,7 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
 });
 
 
-//OBTENER PRODUCTO POR CÓDIGO
+
 app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
     
     Product.findOne({code: req.params.code}, (err, product)=>{
@@ -90,11 +90,6 @@ app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
     })
     
 });
-
-
-
-
-
 
 
 app.delete(BASE_API_PATH + "/products/:code", (req, res)=>{
@@ -156,8 +151,6 @@ app.patch(BASE_API_PATH + "/products/:code", (req, res) => {
 
 });
 
-
-
 app.put(BASE_API_PATH + "/products/:code",(req,res)=>{
     console.log(Date() + " - PUT /products/" + req.params.id);
     Product.findOne({code: req.params.code}, (err, product)=>{
@@ -203,11 +196,13 @@ app.get(BASE_API_PATH+ "/providers", (req,response)=>{
             response.sendStatus(500);
         })
 });
-/*
-app.put(BASE_API_PATH+"/providers", (req,response)=>{
-    console.log("PUT /providers");
 
-    ProvidersResource.putProviders()
+app.put(BASE_API_PATH+ "/providers/:cif/update", (req,response)=>{
+
+    console.log("update provider");
+    var data= req.body;
+
+    ProvidersResource.putStockProveedor(req.params.cif, data)
         .then((body)=>{
             response.send(body);
         })
@@ -215,6 +210,6 @@ app.put(BASE_API_PATH+"/providers", (req,response)=>{
             console.log("error: "+error);
             response.sendStatus(500);
         })
-});*/
+});
 
 module.exports = app;

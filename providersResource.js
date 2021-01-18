@@ -24,10 +24,11 @@ class ProvidersResource{
         return request.get(url, options);
     }
 
-    static putStockProveedor(){
-        const url = ProvidersResource.providersUrl("/providers");
+    static putStockProveedor(id, data){
+        const url = ProvidersResource.providersUrl("/providers/"+id+"/update");
         const options={
-            headers: ProvidersResource.requestHeaders()
+            headers: ProvidersResource.requestHeaders(),
+            body: data
         }
 
         return request.put(url, options);
