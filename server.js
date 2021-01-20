@@ -3,17 +3,22 @@ var bodyParser = require('body-parser');
 const ProvidersResource= require('./providersResource.js');
 const Product = require('./products.js');
 const https = require('https');
+const passport= require('passport');
+require('./passport.js');
 
 var BASE_API_PATH = "/api/v1";
 
 var app = express();
 app.use(bodyParser.json());
+app.use(passport.initialize());
 
 app.get("/", (req, res) => {
     res.send("<html><body><h1>Catálogo de productos</h1><h2>Un saludo,</h2><h2>   Lola</h2></body></html>");
 });
 
-app.get(BASE_API_PATH+"/products?search=", (req, res)=>{
+app.get(BASE_API_PATH+"/products?search=", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res)=>{
     console.log(Date() + " - GET /products/ by text= "+req.query.search);
     Product.find({$text:{$search:q}}, (err, products)=>{
         if(err){
@@ -26,7 +31,9 @@ app.get(BASE_API_PATH+"/products?search=", (req, res)=>{
 
 });
 
-app.get(BASE_API_PATH + "/products/providers", (req,res)=>{
+app.get(BASE_API_PATH + "/products/providers",
+    passport.authenticate('localapikey', {session:false}), 
+    (req,res)=>{
     console.log(Date() + " - GET Name of all providers");
     
     Product.distinct("provider_name", (err, providers) => {
@@ -40,8 +47,9 @@ app.get(BASE_API_PATH + "/products/providers", (req,res)=>{
     })
 });
 
-app.get(BASE_API_PATH + "/products", (req, res) => {
-    
+app.get(BASE_API_PATH + "/products", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res) => {
     console.log(Date() + " - GET /products" );
     Product.find({}, (err, products) => {
         if (err) {
@@ -72,7 +80,9 @@ app.get(BASE_API_PATH + "/products", (req, res) => {
 
 
 
-app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
+app.get(BASE_API_PATH+"/products/:code", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res)=>{
     
     Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
@@ -92,7 +102,9 @@ app.get(BASE_API_PATH+"/products/:code", (req, res)=>{
 });
 
 
-app.delete(BASE_API_PATH + "/products/:code", (req, res)=>{
+app.delete(BASE_API_PATH + "/products/:code", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res)=>{
 
     console.log(Date() + " - Delete /products/"+req.params.code);
     
@@ -106,7 +118,9 @@ app.delete(BASE_API_PATH + "/products/:code", (req, res)=>{
     })
 });
 
-app.post(BASE_API_PATH + "/products", (req, res) => {
+app.post(BASE_API_PATH + "/products", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res) => {
     console.log(Date() + " - POST /products");
     var product = req.body;
     Product.create(product, (err) => {
@@ -119,7 +133,9 @@ app.post(BASE_API_PATH + "/products", (req, res) => {
     });
 });
 
-app.patch(BASE_API_PATH + "/products/:code", (req, res) => {
+app.patch(BASE_API_PATH + "/products/:code",
+    passport.authenticate('localapikey', {session:false}), 
+    (req, res) => {
     console.log(Date() + " - PATCH /products/" + req.params.code + " amount:" + req.body.amount);
 
     Product.findOne({code: req.params.code}, (err, product)=>{
@@ -151,7 +167,9 @@ app.patch(BASE_API_PATH + "/products/:code", (req, res) => {
 
 });
 
-app.put(BASE_API_PATH + "/products/:code",(req,res)=>{
+app.put(BASE_API_PATH + "/products/:code",
+    passport.authenticate('localapikey', {session:false}), 
+    (req,res)=>{
     console.log(Date() + " - PUT /products/" + req.params.id);
     Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
@@ -184,7 +202,9 @@ app.put(BASE_API_PATH + "/products/:code",(req,res)=>{
     })
 });
 
-app.get(BASE_API_PATH+ "/providers", (req,response)=>{
+app.get(BASE_API_PATH+ "/providers", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req,response)=>{
     console.log("GET /providers");
 
     ProvidersResource.getProviders()
@@ -197,7 +217,9 @@ app.get(BASE_API_PATH+ "/providers", (req,response)=>{
         })
 });
 
-app.put(BASE_API_PATH+ "/providers/:cif/update", (req,response)=>{
+app.put(BASE_API_PATH+ "/providers/:cif/update", 
+    passport.authenticate('localapikey', {session:false}), 
+    (req,response)=>{
 
     console.log("update provider");
     var data= req.body;
