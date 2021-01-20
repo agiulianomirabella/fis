@@ -11,6 +11,7 @@ COPY index.js .
 COPY server.js .
 COPY db.js .
 COPY products.js .
+COPY providersResource.js .
 
 EXPOSE 3000
 

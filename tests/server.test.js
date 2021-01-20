@@ -1,5 +1,5 @@
 const app = require("../server.js");
-const db = require("../db.js");
+const dbConnect = require("../db.js");
 const request = require("supertest");
 
 describe("Hello world tests", () => {
@@ -49,7 +49,7 @@ describe("Products API", () => {
                 }
             ];
 
-            dbFind = jest.spyOn(db, "find");
+            dbFind = jest.spyOn(dbConnect, "find");
             dbFind.mockImplementation((query, callback) => {
                 callback(null, products);
             });
