@@ -1,6 +1,7 @@
 const app = require("../server.js");
-const dbConnect = require("../db.js");
 const request = require("supertest");
+// const db = require("../db.js");
+const Product = require('../products.js');
 
 describe("Hello world tests", () => {
     it("Should do a stupid test", () => {
@@ -29,7 +30,7 @@ describe("Products API", () => {
 
         beforeAll(() => {
             const products = [
-                {
+                new Product({
                     "code": "code_1",
                     "name": "product_1",
                     "provider_name": "provider_name_1",
@@ -37,8 +38,8 @@ describe("Products API", () => {
                     "category": "Mascarillas",
                     "price": 5,
                     "amount": 100
-                },
-                {
+                }),
+                new Product({
                     "code": "code_2",
                     "name": "product_2",
                     "provider_name": "provider_name_2",
@@ -46,10 +47,10 @@ describe("Products API", () => {
                     "category": "Guantes",
                     "price": 10,
                     "amount": 150
-                }
+                })
             ];
 
-            dbFind = jest.spyOn(dbConnect, "find");
+            dbFind = jest.spyOn(Product, "find");
             dbFind.mockImplementation((query, callback) => {
                 callback(null, products);
             });
