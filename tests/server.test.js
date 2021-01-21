@@ -1,9 +1,7 @@
 const app = require("../server.js");
-const request = require("supertest");
-// const db = require("../db.js");
-const { query } = require('express');
 const Product = require('../products.js');
 const ApiKey = require("../apikeys.js");
+const request = require("supertest");
 
 describe("Hello world tests", () => {
     it("Should do a stupid test", () => {
