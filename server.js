@@ -48,7 +48,7 @@ app.get(BASE_API_PATH + "/products/providers",
 });
 
 app.get(BASE_API_PATH + "/products", 
-    passport.authenticate('localapikey', {session:false}), 
+    passport.authenticate('localapikey', {session:false}),
     (req, res) => {
     console.log(Date() + " - GET /products" );
     Product.find({}, (err, products) => {

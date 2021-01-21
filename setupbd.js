@@ -10,7 +10,7 @@ dbConnect().then(
             if(err){
                 console.log(err);
             } else{
-                console.log('User: '+ user.user + ", "+ user.apikey+ "saved");
+                console.log('User: '+ user.user + ", "+ user.apikey+ " saved");
             }
 
         })
