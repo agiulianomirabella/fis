@@ -12,7 +12,6 @@ dbConnect().then(
             } else{
                 console.log('User: '+ user.user + ", "+ user.apikey+ "saved");
             }
-
         })
     }
 )
