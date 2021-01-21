@@ -1,6 +1,6 @@
 const passport= require('passport');
 const LocalAPIKey= require('passport-localapikey-update').Strategy;
-const ApiKey = require('./apikeys');
+const ApiKey = require('./apikeys.js');
 
 passport.use(new LocalAPIKey(
     (apikey, done)=>{
