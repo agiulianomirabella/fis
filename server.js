@@ -48,7 +48,7 @@ app.get(BASE_API_PATH + "/products/providers",
 });
 
 app.get(BASE_API_PATH + "/products", 
-    passport.authenticate('localapikey', {session:false}), 
+    passport.authenticate('localapikey', {session:false}),
     (req, res) => {
     console.log(Date() + " - GET /products" );
     Product.find({}, (err, products) => {
@@ -153,10 +153,40 @@ app.patch(BASE_API_PATH + "/products/:code",
                         res.sendStatus(201);
                     }
                 });
-            } else {
-                console.log("Forbidden amount:");
-                console.log(Date() + "Product " + req.params.code + " cannot be updated by " + req.body.amount + " units. Only " + product.amount + " in stock.");
-                res.sendStatus(400);
+            } 
+            else {
+
+                var data= product.amount + req.body.amount;
+                ProvidersResource.getProvidersStock(product.provider_cif, data)
+                    .then((body)=>{
+
+                        if(body=="0"){
+                            console.log("Forbidden amount:");
+                            console.log(Date() + "Product " + req.params.code + " cannot be updated by " + req.body.amount + " units. Only " + product.amount + " in stock.");
+                            
+                            res.status(400).send("No se puede");
+                            
+                        }else{
+                            
+                            Product.updateOne({code: req.params.code}, { $set: {amount: 0}}, (err) => {
+                            if (err) {
+                                console.log(Date() + " - " + err);
+                                res.status(500);
+                            } else {
+                                res.status(200).send("Se ha podido comprar");
+                            }
+                            });
+                        }
+                        
+
+                    })
+                    .catch(()=>{
+
+                        console.log("Forbidden amount:");
+                        console.log(Date() + "Product " + req.params.code + " cannot be updated by " + -req.body.amount + " units. Only " + product.amount + " in stock.");
+                        res.status(400).send(" Only " + product.amount + " in stock.");
+                    })
+                    
             }
         }        
         else{
@@ -201,6 +231,7 @@ app.put(BASE_API_PATH + "/products/:code",
         
     })
 });
+
 
 app.get(BASE_API_PATH+ "/providers", 
     passport.authenticate('localapikey', {session:false}), 
