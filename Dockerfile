@@ -11,6 +11,10 @@ COPY index.js .
 COPY server.js .
 COPY db.js .
 COPY products.js .
+COPY providersResource.js .
+COPY passport.js .
+COPY apikeys.js .
+COPY setupbd.js .
 
 EXPOSE 3000
 
