@@ -69,11 +69,14 @@ app.get(BASE_API_PATH + "/products",
 
 
             if(products.length === 0){
-                res.status(404).send("Products Not Found")
+                res.status(404).send("There are no products matching request parameters")
             }else{
-                res.status(200).send(products);
+                res.status(200).send(
+                    products.map(function(p) { 
+                        return p.cleanup();
+                    })
+                );
             }
-            
         };
     });
 });
@@ -200,7 +203,7 @@ app.patch(BASE_API_PATH + "/products/:code",
 app.put(BASE_API_PATH + "/products/:code",
     passport.authenticate('localapikey', {session:false}), 
     (req,res)=>{
-    console.log(Date() + " - PUT /products/" + req.params.id);
+    console.log(Date() + " - PUT /products/" + req.params.code);
     Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date()+ " - "+err);
