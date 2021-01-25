@@ -4,7 +4,7 @@ const ApiKey = require("../apikeys.js");
 const request = require("supertest");
 
 describe("Hello world tests", () => {
-    it("Should do a stupid test", () => {
+    it("should do a stupid test", () => {
         const a = 5;
         const b = 3;
         const sum = a + b;
@@ -15,7 +15,7 @@ describe("Hello world tests", () => {
 
 describe("Products API", () => {
     describe("GET /", () => {
-        it("Should return an HTML document", () => {
+        it("should return an HTML document", () => {
             return request(app)
             .get("/")
             .then((response) => {
@@ -66,7 +66,7 @@ describe("Products API", () => {
             });
         });
 
-        it("Should return all products", () => {
+        it("should return all products", () => {
             return request(app)
             .get("/api/v1/products")
             .set("apikey", "1")
@@ -92,11 +92,11 @@ describe("Products API", () => {
 
         beforeEach(() => {
             dbInsert = jest.spyOn(Product, "create")
+
             const user = {
                 user: "test",
                 apikey: "1"
             }
-
             auth = jest.spyOn(ApiKey, "findOne");
             auth.mockImplementation((query, callback) => {
                 callback(null, new ApiKey(user));
@@ -104,7 +104,7 @@ describe("Products API", () => {
         });
 
 
-        it("Should add a new Product is everything is fine", () => {
+        it("should add a new Product is everything is fine", () => {
             dbInsert.mockImplementation((p, callback) => {
                 callback(false);
             });
@@ -119,7 +119,7 @@ describe("Products API", () => {
             });
         });
 
-        it("Should return 500 if there is any problem with the DB", () => {
+        it("should return 500 if there is any problem with the DB", () => {
             dbInsert.mockImplementation((p, callback) => {
                 callback(true);
             });
@@ -140,24 +140,23 @@ describe("Products API", () => {
 
 
 
-
-
-
-
-    describe("PUT /products", () => {
-        let dbInsert;
-        const product = {
-            "code": "code_to_put_test",
-            "name": "product_to_put_test",
-            "provider_name": "provider_name_to_put_test",
-            "provider_cif": "provider_cif_to_put_test",
-            "category": "Guantes",
-            "price": 50,
-            "amount": 200
-        };
-
-        beforeEach(() => {
-            dbInsert = jest.spyOn(Product, "update")
+    describe("DELETE /products/1234", () => {
+        beforeAll(() => {
+            const product = new Product({
+                    "code": "1234",
+                    "name": "product_to_delete_test",
+                    "provider_name": "provider_name_to_delete_test",
+                    "provider_cif": "provider_cif_to_delete_test",
+                    "category": "Mascarillas",
+                    "price": 5,
+                    "amount": 100
+                }),
+            
+            dbFind = jest.spyOn(Product, "findOneAndRemove");
+            dbFind.mockImplementation((query, callback) => {
+                callback(null, product);
+            });
+            
             const user = {
                 user: "test",
                 apikey: "1"
@@ -169,34 +168,92 @@ describe("Products API", () => {
             });
         });
 
+        it("should delete the product", () => {
+            return request(app)
+            .delete("/api/v1/products/1234")
+            .set("apikey", "1")
+            .then((response) => {
+                expect(response.statusCode).toBe(204);
+                expect(dbFind).toBeCalledWith({}, expect.any(Function));
+            });
+        });
+    });
 
-        it("Should add a new Product is everything is fine", () => {
-            dbInsert.mockImplementation((p, callback) => {
+
+
+
+
+
+
+
+
+
+
+    describe("PUT /products/1234", () => {
+        const product_to_put = new Product({
+            "code": "1234",
+            "name": "new_name",
+            "provider_name": "new_provider_name",
+            "provider_cif": "new_provider_cif",
+            "category": "Guantes",
+            "price": 15,
+            "amount": 200
+        });
+
+        beforeAll(() => {
+            const product = new Product({
+                "code": "1234",
+                "name": "product_to_update_test",
+                "provider_name": "provider_name_to_update_test",
+                "provider_cif": "provider_cif_to_update_test",
+                "category": "Mascarillas",
+                "price": 5,
+                "amount": 100
+            });
+
+            dbFind = jest.spyOn(Product, "findOne");
+            dbFind.mockImplementation((query, callback) => {
+                callback(null, product);
+            });
+            
+            const user = {
+                user: "test",
+                apikey: "1"
+            }
+
+            auth = jest.spyOn(ApiKey, "findOne");
+            auth.mockImplementation((query, callback) => {
+                callback(null, new ApiKey(user));
+            });
+        });
+
+        it("should update the product", () => {
+            dbFind.mockImplementation((p, callback) => {
                 callback(false);
             });
 
             return request(app)
-            .put("/api/v1/products")
+            .delete("/api/v1/products/1234")
             .set("apikey", "1")
-            .send(product)
+            .send(product_to_put)
             .then((response) => {
-                expect(response.statusCode).toBe(201);
-                expect(dbInsert).toBeCalledWith(product, expect.any(Function));
+                expect(response.statusCode).toBe(204);
+                // expect(dbFind).toBeCalledWith(product_to_put, expect.any(Function));
             });
         });
 
-        it("Should return 500 if there is any problem with the DB", () => {
-            dbInsert.mockImplementation((p, callback) => {
+        it("should return 500 if there is any problem with the DB", () => {
+            dbFind.mockImplementation((p, callback) => {
                 callback(true);
             });
 
             return request(app)
             .post("/api/v1/products")
             .set("apikey", "1")
-            .send(product)
+            .send(product_to_put)
             .then((response) => {
                 expect(response.statusCode).toBe(500);
-                expect(dbInsert).toBeCalledWith(product, expect.any(Function));
+                // expect(dbUpdate).toBeCalledWith(product, expect.any(Function));
             });
         });
     });
