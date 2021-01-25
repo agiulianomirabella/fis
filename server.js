@@ -170,7 +170,7 @@ app.patch(BASE_API_PATH + "/products/:code",
 app.put(BASE_API_PATH + "/products/:code",
     passport.authenticate('localapikey', {session:false}), 
     (req,res)=>{
-    console.log(Date() + " - PUT /products/" + req.params.id);
+    console.log(Date() + " - PUT /products/" + req.params.code);
     Product.findOne({code: req.params.code}, (err, product)=>{
         if(err){
             console.log(Date()+ " - "+err);

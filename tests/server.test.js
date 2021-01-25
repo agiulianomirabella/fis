@@ -134,6 +134,73 @@ describe("Products API", () => {
             });
         });
     });
+
+
+
+
+
+
+
+
+
+
+    describe("PUT /products", () => {
+        let dbInsert;
+        const product = {
+            "code": "code_to_put_test",
+            "name": "product_to_put_test",
+            "provider_name": "provider_name_to_put_test",
+            "provider_cif": "provider_cif_to_put_test",
+            "category": "Guantes",
+            "price": 50,
+            "amount": 200
+        };
+
+        beforeEach(() => {
+            dbInsert = jest.spyOn(Product, "update")
+            const user = {
+                user: "test",
+                apikey: "1"
+            }
+
+            auth = jest.spyOn(ApiKey, "findOne");
+            auth.mockImplementation((query, callback) => {
+                callback(null, new ApiKey(user));
+            });
+        });
+
+
+        it("Should add a new Product is everything is fine", () => {
+            dbInsert.mockImplementation((p, callback) => {
+                callback(false);
+            });
+
+            return request(app)
+            .put("/api/v1/products")
+            .set("apikey", "1")
+            .send(product)
+            .then((response) => {
+                expect(response.statusCode).toBe(201);
+                expect(dbInsert).toBeCalledWith(product, expect.any(Function));
+            });
+        });
+
+        it("Should return 500 if there is any problem with the DB", () => {
+            dbInsert.mockImplementation((p, callback) => {
+                callback(true);
+            });
+
+            return request(app)
+            .post("/api/v1/products")
+            .set("apikey", "1")
+            .send(product)
+            .then((response) => {
+                expect(response.statusCode).toBe(500);
+                expect(dbInsert).toBeCalledWith(product, expect.any(Function));
+            });
+        });
+    });
+
 });
 
 
