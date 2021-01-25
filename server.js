@@ -109,7 +109,7 @@ app.delete(BASE_API_PATH + "/products/:code",
     passport.authenticate('localapikey', {session:false}), 
     (req, res)=>{
 
-    console.log(Date() + " - Delete /products/"+req.params.code);
+    console.log(Date() + " - DELETE /products/"+req.params.code);
     
     Product.findOneAndRemove({code: req.params.code}, (err, product)=>{
         if(err){
@@ -163,7 +163,7 @@ app.patch(BASE_API_PATH + "/products/:code",
             }
         }        
         else{
-            console.log(Date() + " - No product available with this code: "+ req.params.id);
+            console.log(Date() + " - No product available with this code: "+ req.params.code);
             res.sendStatus(400);
         }
     })
