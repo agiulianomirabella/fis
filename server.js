@@ -69,11 +69,14 @@ app.get(BASE_API_PATH + "/products",
 
 
             if(products.length === 0){
-                res.status(404).send("Products Not Found")
+                res.status(404).send("There are no products matching request parameters")
             }else{
-                res.status(200).send(products);
+                res.status(200).send(
+                    products.map(function(p) { 
+                        return p.cleanup();
+                    })
+                );
             }
-            
         };
     });
 });
