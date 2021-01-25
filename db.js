@@ -1,7 +1,5 @@
 const mongoose= require('mongoose');
 
-
-
 // const DB_URL=(process.env.MONGODB_URI || 'http://host.docker.internal:3000/api/v2');
 const DB_URL=(process.env.MONGODB_URI || 'mongodb://db/test');
 
