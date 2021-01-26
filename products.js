@@ -11,7 +11,6 @@ const contactSchema = new mongoose.Schema({
         required: true
     },
     description: String,
-    productImages: Buffer,
     
     provider_name:{
         type: String,
@@ -34,8 +33,7 @@ const contactSchema = new mongoose.Schema({
         type: Number,
         min: 0,
         requied: true,
-    },
-    created: Date, //lo añadimos?
+    }
 })
 
 
@@ -45,8 +43,8 @@ contactSchema.methods.cleanup = function(){
         code: this.code,
         name: this.name,
         description: this.description,
-        productImages: this.productImages,
-        provider: this.provider,
+        provider_name: this.provider_name,
+        provider_cif: this.provider_cif,
         category: this.category,
         price: this.price,
         amount: this.amount

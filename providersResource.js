@@ -4,13 +4,15 @@ const request = require('request-promise-native').defaults({json: true});
 class ProvidersResource{
     
     static providersUrl(resourceUrl){
-        const providersServer = (process.env.PROVIDERS_URL || 'http://host.docker.internal:4000/api/v1');
+        // const providersServer = (process.env.PROVIDERS_URL || 'http://host.docker.internal:4000/api/v1');
+        const providersServer = (process.env.PROVIDERS_URL);
         return urljoin(providersServer, resourceUrl);
     }
 
     //util para merter el api key en todos 
     static requestHeaders(){
-        const providersKey = (process.env.PROVIDERS_APIKEY || ''); //la apikey por defecto no sé de donde sale. AÑADIR!!
+        // const providersKey = (process.env.PROVIDERS_APIKEY || ''); //la apikey por defecto no sé de donde sale. AÑADIR!!
+        const providersKey = (process.env.PROVIDERS_APIKEY);
         return {
             apikey: providersKey
         };
