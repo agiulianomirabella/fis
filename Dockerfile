@@ -15,6 +15,7 @@ COPY providersResource.js .
 COPY passport.js .
 COPY apikeys.js .
 COPY setupbd.js .
+COPY tests
 
 EXPOSE 3000
 
