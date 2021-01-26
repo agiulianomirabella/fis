@@ -17,6 +17,7 @@ describe('DB connection', () => {
         const product = new Product({
             "code": "code_1",
             "name": "product_1",
+            "description": "description_1",
             "provider_name": "provider_name_1",
             "provider_cif": "provider_cif_1",
             "category": "Mascarillas",
