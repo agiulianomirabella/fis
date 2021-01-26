@@ -15,13 +15,13 @@ describe('Products DB connection', () => {
 
     it('Writes a product in the DB', (done) => {
         const product = new Product({
-            "code": "code_integration_test",
-            "name": "product_integration_test",
-            "provider_name": "provider_name_integration_test",
-            "provider_cif": "provider_cif_integration_test",
-            "category": "Guantes",
-            "price": 50,
-            "amount": 200
+            "code": "code_1",
+            "name": "product_1",
+            "provider_name": "provider_name_1",
+            "provider_cif": "provider_cif_1",
+            "category": "Mascarillas",
+            "price": 5,
+            "amount": 100
         });
         product.save((err, product) => {
             expect(err).toBeNull();
