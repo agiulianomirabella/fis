@@ -212,13 +212,13 @@ app.put(BASE_API_PATH + "/products/:code",
             console.log(Date()+" - PUT /products/"+req.params.code + " Error: Product not found");
             res.sendStatus(404);
         }else{
-            product.name= req.body.name;
-            product.description= req.body.description;
-            product.productImages= req.body.productImages;
-            product.category= req.body.category;
-            product.price= req.body.price;
-            product.stock= req.body.stock;
-            product.amount= req.body.amount;        
+            product.name          = req.body.name;
+            product.description   = req.body.description;
+            product.provider_name = req.body.provider_name;
+            product.provider_cif  = req.body.provider_cif;
+            product.category      = req.body.category;
+            product.price         = req.body.price;
+            product.amount        = req.body.amount;
 
             product.save((err, product) =>{
                 if(err){
@@ -231,7 +231,6 @@ app.put(BASE_API_PATH + "/products/:code",
                 }
             })
         }
-        
     })
 });
 
