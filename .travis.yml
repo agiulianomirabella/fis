@@ -1,10 +1,11 @@
 sudo: required
 language: node_js
 node_js:
-  - "9"
+  # - "9"
+  - "lts/*"
 services:
   - docker
-  - mongodb
+  # - mongodb
 
 before_install:
   - wget -q0- https://toolbelt.heroku.com/install.sh | sh
