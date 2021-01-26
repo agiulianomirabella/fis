@@ -13,7 +13,7 @@ describe('DB connection', () => {
         });
     });
 
-    it('writes a Product in the MongoDB', (done) => {
+    it('writes a Product in MongoDB', (done) => {
         const product = new Product({
             "code": "code_1",
             "name": "product_1",
