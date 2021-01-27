@@ -26,3 +26,6 @@ deploy:
   
   on:
     branch: main
+
+env:
+  - MONGODB_URI: "mongodb+srv://user0:etwB8JAXa2aTPokB@product.8m7zl.mongodb.net/Products?retryWrites=true&w=majority"
