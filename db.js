@@ -19,6 +19,7 @@ const DB_URL=(process.env.MONGODB_URI || 'mongodb://db/test');
 
 const dbConnect= function(){
     console.log(DB_URL);
+    console.log(process.env);
     const db=mongoose.connection; 
     db.on('error', console.error.bind(console, 'connection error: ')); 
     return mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
