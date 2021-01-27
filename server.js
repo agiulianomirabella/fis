@@ -66,22 +66,19 @@ app.get(BASE_API_PATH + "/products",
                 products=products.filter((product) =>product.provider_name == req.query.provider);
             }
 
-
-            if(products.length === 0){
-                res.status(404).send("There are no products matching request parameters")
-            }else{
-                res.status(200).send(
-                    products
-                    // products.map(function(p) { 
-                    //     return p.cleanup();
-                    // })
-                );
-            }
+            // if(products.length === 0){
+            //     res.status(404).send("There are no products matching request parameters")
+            // }else{
+            res.status(200).send(
+                products
+                // products.map((p) => {
+                //     return p.cleanup();
+                // })
+            );
+            // }
         };
     });
 });
-
-
 
 app.get(BASE_API_PATH+"/products/:code", 
     passport.authenticate('localapikey', {session:false}), 
