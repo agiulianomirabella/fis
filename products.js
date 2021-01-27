@@ -1,51 +1,51 @@
 const mongoose = require('mongoose');
 
-// const contactSchema = new mongoose.Schema({
-//     code: {
-//         type: String,
-//         required: true,
-//         unique: true
-//     },
-//     name: {
-//         type: String,
-//         required: true
-//     },
-//     description: String,
-    
-//     provider_name:{
-//         type: String,
-//         required:true
-//     },
-
-//     provider_cif:{
-//         type: String,
-//         required: true
-//     },
-    
-//     category: {type: String, enum:['Mascarillas','Guantes', 'Limpieza', 'Pantallas', 'Otros']},
-//     price: {
-//         type: Number,
-//         min: 0,
-//         required: true
-//     },
- 
-//     amount: {
-//         type: Number,
-//         min: 0,
-//         required: true,
-//     }
-// })
-
 const contactSchema = new mongoose.Schema({
-    code: String,
-    name: String,
+    code: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
-    provider_name: String,
-    provider_cif: String,
-    category: String,
-    price: Number,
-    amount: Number
+    
+    provider_name:{
+        type: String,
+        required:true
+    },
+
+    provider_cif:{
+        type: String,
+        required: true
+    },
+    
+    category: {type: String, enum:['Mascarillas','Guantes', 'Limpieza', 'Pantallas', 'Otros']},
+    price: {
+        type: Number,
+        min: 0,
+        required: true
+    },
+ 
+    amount: {
+        type: Number,
+        min: 0,
+        required: true,
+    }
 })
+
+// const contactSchema = new mongoose.Schema({
+//     code: String,
+//     name: String,
+//     description: String,
+//     provider_name: String,
+//     provider_cif: String,
+//     category: String,
+//     price: Number,
+//     amount: Number
+// })
 
 contactSchema.methods.cleanup = function(){
     return{
