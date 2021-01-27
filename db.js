@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-// const DB_URL = (process.env.MONGO_URI || 'mongodb://db/test');
-const DB_URL = ("mongodb+srv://user0:etwB8JAXa2aTPokB@product.8m7zl.mongodb.net/Products?retryWrites=true&w=majority" || 'mongodb://db/test');
+const DB_URL = (process.env.MONGODB_URI || 'mongodb://db/test');
+// const DB_URL = ("mongodb+srv://user0:etwB8JAXa2aTPokB@product.8m7zl.mongodb.net/Products?retryWrites=true&w=majority" || 'mongodb://db/test');
 
 const dbConnect = function() {
     const db = mongoose.connection;
