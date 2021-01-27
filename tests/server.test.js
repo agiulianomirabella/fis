@@ -49,7 +49,6 @@ describe("Products API", () => {
                 })
             ];
 
-            
             dbFind = jest.spyOn(Product, "find");
             dbFind.mockImplementation((query, callback) => {
                 callback(null, products);
@@ -135,11 +134,6 @@ describe("Products API", () => {
         });
     });
 
-
-
-
-
-
     describe("DELETE /products/1234", () => {
         beforeAll(() => {
             const product = new Product({
@@ -178,16 +172,6 @@ describe("Products API", () => {
             });
         });
     });
-
-
-
-
-
-
-
-
-
-
 
     describe("PUT /products/1234", () => {
         const product_to_put = new Product({
@@ -238,7 +222,6 @@ describe("Products API", () => {
             .send(product_to_put)
             .then((response) => {
                 expect(response.statusCode).toBe(204);
-                // expect(dbFind).toBeCalledWith(product_to_put, expect.any(Function));
             });
         });
 
@@ -253,7 +236,6 @@ describe("Products API", () => {
             .send(product_to_put)
             .then((response) => {
                 expect(response.statusCode).toBe(500);
-                // expect(dbUpdate).toBeCalledWith(product, expect.any(Function));
             });
         });
     });
