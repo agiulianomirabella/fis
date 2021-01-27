@@ -36,17 +36,6 @@ const contactSchema = new mongoose.Schema({
     }
 })
 
-// const contactSchema = new mongoose.Schema({
-//     code: String,
-//     name: String,
-//     description: String,
-//     provider_name: String,
-//     provider_cif: String,
-//     category: String,
-//     price: Number,
-//     amount: Number
-// })
-
 contactSchema.methods.cleanup = function(){
     return{
         code: this.code,
