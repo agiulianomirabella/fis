@@ -28,7 +28,6 @@ app.get(BASE_API_PATH+"/products?search=",
             res.status(200).send(products.cleanup())
         }
     })
-
 });
 
 app.get(BASE_API_PATH + "/products/providers",
@@ -72,9 +71,10 @@ app.get(BASE_API_PATH + "/products",
                 res.status(404).send("There are no products matching request parameters")
             }else{
                 res.status(200).send(
-                    products.map(function(p) { 
-                        return p.cleanup();
-                    })
+                    products
+                    // products.map(function(p) { 
+                    //     return p.cleanup();
+                    // })
                 );
             }
         };
