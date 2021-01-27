@@ -6,7 +6,7 @@ Se ha realizado el microservicio producto del equipo 4, Shopid.
 
 Las APIS implementadas son:
 
-Get	
+#Get	
 
 /products	Devuelve todos los productos del catálogo	200 – OK devuelve productos
 500 – Internal Error Server
@@ -29,7 +29,7 @@ Get
 500 – Internal Error Server
 401 - Unauthorized
 
-POST	
+#POST	
 
 /products	Se añade un producto a la base de datos
 Req params: body	
@@ -37,19 +37,19 @@ Req params: body
 500 – Internal Error Server
 401 - Unauthorized
 
-DELETE	
+#DELETE	
 /products/:code	Se elimina el producto cuyo código corresponda con :code	
 204 – No content
 500- Internal Error Server
 401 - Unauthorized
 
-PATCH	
+#PATCH	
 /products/:code?amount=p	Se actualiza el stock de un producto cuyo código sea “code” con la cantidad indicada. Si se introduce una cantidad negativa, se resta al stock de producto (emulando la compra). Si pide una cantidad mayor al stock, se consulta el stock del proveedor. Si tiene stock disponible, se permite la compra, sino no	200 – OK devuelve productos
 400 - Forbiden
 500 – Internal Error Server
 401 - Unauthorized
 
-PUT	
+#PUT	
 /products/:code	Actualiza todos los atributos de un producto cuyo código sea code.
 Req params: body	
 200 – Ok
